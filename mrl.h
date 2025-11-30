@@ -1,3 +1,6 @@
+#ifndef MRL_H
+#define MRL_H
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -73,3 +76,5 @@ class MRL {
         }
         
 };
+
+#endif 
