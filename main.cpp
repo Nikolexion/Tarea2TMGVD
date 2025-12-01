@@ -60,8 +60,8 @@ void runExperiment(const vector<int>& data, const vector<int>& sortedData, float
 
         int error = abs(estimated - exact);
 
-        // Archivo, Epsilon, TipoExperimento, Parametro(phi), Estimado, Exacto, ErrorAbsoluto
-        csvFile << fileLabel << "," << epsilon << ",Quantile," << phi << "," << estimated << "," << exact << "," << error << endl;
+        // Archivo, N, Epsilon, TipoExperimento, Parametro(phi), Estimado, Exacto, ErrorAbsoluto
+        csvFile << fileLabel << "," << n << "," << epsilon << ",Quantile," << phi << "," << estimated << "," << exact << "," << error << endl;
     }
 
     // Experimento de Rank 
@@ -76,8 +76,8 @@ void runExperiment(const vector<int>& data, const vector<int>& sortedData, float
         
         int error = abs(estimatedRank - exactRank);
 
-        // Guardar: Archivo, Epsilon, TipoExperimento, Parametro(valor), Estimado, Exacto, ErrorAbsoluto
-        csvFile << fileLabel << "," << epsilon << ",Rank," << queryValue << "," << estimatedRank << "," << exactRank << "," << error << endl;
+        // Guardar: Archivo, N, Epsilon, TipoExperimento, Parametro(valor), Estimado, Exacto, ErrorAbsoluto
+        csvFile << fileLabel << "," << n << "," << epsilon << ",Rank," << queryValue << "," << estimatedRank << "," << exactRank << "," << error << endl;
     }
 }
 
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
     
     ofstream csvFile(outputPath);
     // Header del CSV
-    csvFile << "Archivo,Epsilon,TipoExperimento,Parametro,Estimado,Exacto,ErrorAbs" << endl;
+    csvFile << "Archivo,N,Epsilon,TipoExperimento,Parametro,Estimado,Exacto,ErrorAbs" << endl;
 
     cout << "Experimento para: " << baseName << endl;
 

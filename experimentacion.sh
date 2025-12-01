@@ -2,5 +2,5 @@
 
 mkdir -p results
 for archivo in Datos/*.txt; do
-    ./main "$archivo"
+    ./main.out "$archivo"
 done
