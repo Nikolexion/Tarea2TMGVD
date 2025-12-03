@@ -39,7 +39,7 @@ def plot_results():
             
             # --- MODIFICACIÓN: Creamos una grilla de 2 filas x 2 columnas ---
             fig, axes = plt.subplots(2, 2, figsize=(16, 12))
-            fig.suptitle(f'Análisis Experimental: {base_name} (N estimado $\\approx$ {N})', fontsize=16)            
+            fig.suptitle(f'Análisis Experimental: {base_name} (N={N})', fontsize=16)            
             
             epsilons = sorted(df['Epsilon'].unique(), reverse=True)
 
