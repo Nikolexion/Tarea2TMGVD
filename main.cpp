@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 #include "mrl.h"      
 
 using namespace std;
@@ -47,8 +48,12 @@ void runExperiment(const vector<int>& data, const vector<int>& sortedData, float
         mrl.insertar(x);
     }
 
-    // Experimento de Quantiles 
-    vector<float> phis = {0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95}; 
+    // Experimento de Quantiles
+    double quantile_gap = 0.02; 
+    vector<float> phis;
+    for (double i=0 ; i<=1 ; i+=quantile_gap){
+        phis.push_back(i);
+    }
     
     for (float phi : phis) {
         int estimated = mrl.quantil(phi);
@@ -58,10 +63,16 @@ void runExperiment(const vector<int>& data, const vector<int>& sortedData, float
         if (idx >= n) idx = n - 1; 
         int exact = sortedData[idx];
 
-        int error = abs(estimated - exact);
+        float error_absoluto = abs(estimated - exact);
+        float error_relativo;
+        if (exact != 0){
+            error_relativo = static_cast<float>(error_absoluto/exact);
+        } else {
+            error_relativo = -1;
+        }
 
         // Archivo, N, Epsilon, TipoExperimento, Parametro(phi), Estimado, Exacto, ErrorAbsoluto
-        csvFile << fileLabel << "," << n << "," << epsilon << ",Quantile," << phi << "," << estimated << "," << exact << "," << error << endl;
+        csvFile << fileLabel << "," << n << "," << epsilon << ",Quantile," << phi << "," << estimated << "," << exact << "," << static_cast<int>(error_absoluto) << "," << std::fixed << std::setprecision(3) << error_relativo << endl;
     }
 
     // Experimento de Rank 
@@ -74,10 +85,16 @@ void runExperiment(const vector<int>& data, const vector<int>& sortedData, float
         int estimatedRank = mrl.rank(queryValue);
         int exactRank = calcularRankExacto(sortedData, queryValue);
         
-        int error = abs(estimatedRank - exactRank);
+        float error_absoluto = abs(estimatedRank - exactRank);
+        float error_relativo;
+        if (exactRank != 0){
+            error_relativo = static_cast<float>(error_absoluto/exactRank);
+        } else {
+            error_relativo = -1;
+        }
 
         // Guardar: Archivo, N, Epsilon, TipoExperimento, Parametro(valor), Estimado, Exacto, ErrorAbsoluto
-        csvFile << fileLabel << "," << n << "," << epsilon << ",Rank," << queryValue << "," << estimatedRank << "," << exactRank << "," << error << endl;
+        csvFile << fileLabel << "," << n << "," << epsilon << ",Rank," << queryValue << "," << estimatedRank << "," << exactRank << "," << static_cast<int>(error_absoluto) << "," << std::fixed << std::setprecision(2) << error_relativo << endl;
     }
 }
 
@@ -94,7 +111,7 @@ int main(int argc, char* argv[]) {
     
     ofstream csvFile(outputPath);
     // Header del CSV
-    csvFile << "Archivo,N,Epsilon,TipoExperimento,Parametro,Estimado,Exacto,ErrorAbs" << endl;
+    csvFile << "Archivo,N,Epsilon,TipoExperimento,Parametro,Estimado,Exacto,ErrorAbs,ErrorRel" << endl;
 
     cout << "Experimento para: " << baseName << endl;
 
